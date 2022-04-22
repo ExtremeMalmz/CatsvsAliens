@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, os
 from pygame.locals import *
 
 def send_back_to_main():
@@ -124,17 +124,17 @@ def level_1_game_loop():
 
     game_map = load_map('level1')
 
-    grass_img = pygame.image.load('grass.png')
-    dirt_img = pygame.image.load('dirt.png')
-    knd_image = pygame.image.load('knd.png')
-    flag_image = pygame.image.load('spasskayatower.jpg')
-    red_image = pygame.image.load('red.png')
+    grass_img = pygame.image.load(os.path.join('Assets', 'grass.png'))
+    dirt_img = pygame.image.load(os.path.join('Assets','dirt.png'))
+    knd_image = pygame.image.load(os.path.join('Assets','knd.png'))
+    flag_image = pygame.image.load(os.path.join('Assets','spasskayatower.jpg'))
+    red_image = pygame.image.load(os.path.join('Assets','red.png'))
 
-    player_image = pygame.image.load('player.png').convert()
+    player_image = pygame.image.load(os.path.join('Assets','player.png')).convert()
     #original image, needed to make this to make it go back if mirrored
-    player_image_original = pygame.image.load('player.png').convert()
+    player_image_original = pygame.image.load(os.path.join('Assets','player.png')).convert()
     #mirrored for left movement
-    player_image_mirror = pygame.image.load('playermirror.png').convert()
+    player_image_mirror = pygame.image.load(os.path.join('Assets','playermirror.png')).convert()
 
     player_image.set_colorkey((255, 255, 255))
     player_image_original.set_colorkey((255, 255, 255))
@@ -144,7 +144,7 @@ def level_1_game_loop():
     player_rect = pygame.Rect(100,100,5,13)
 
     #spawn an enemy
-    enemy_image = pygame.image.load('enemy.png').convert()
+    enemy_image = pygame.image.load(os.path.join('Assets','enemy.png')).convert()
     enemy_image.set_colorkey((0, 0, 0))
     enemy_rect = pygame.Rect(267, 131, 5, 13)
 
