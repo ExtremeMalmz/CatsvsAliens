@@ -122,7 +122,7 @@ def level_1_game_loop():
 
     pygame.display.set_caption('Level 1')
 
-    game_map = load_map('level1')
+    game_map = load_map(os.path.join('levels', 'level1'))
 
     grass_img = pygame.image.load(os.path.join('Assets', 'grass.png'))
     dirt_img = pygame.image.load(os.path.join('Assets','dirt.png'))

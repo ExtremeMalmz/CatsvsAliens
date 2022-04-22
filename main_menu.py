@@ -2,9 +2,9 @@ import pygame
 from pygame import mixer
 import pygame_menu
 import json
+import os
 
-
-from level1 import level_1_game_loop
+from Levels.level1 import level_1_game_loop
 #from video import intro
 
 pygame.init()
@@ -25,7 +25,7 @@ def start_the_game():
     '''
     pygame.mixer.music.stop()
 
-    my_file = open("games.json", "r")
+    my_file = open(os.path.join('Assets','games.json'), 'r')
     data = json.load(my_file)
     #print(data)
 
@@ -46,7 +46,7 @@ def MyTextValue(name):
     '''
     #print('player name is', name)
         
-    my_file = open("games.json", "w")
+    my_file = open(os.path.join('Assets','games.json'), 'w')
     my_file.write(json.dumps([name]))
     my_file.close()   
 
@@ -71,7 +71,7 @@ def the_main():
 
     
 
-    my_file = open("games.json", "r")
+    my_file = open(os.path.join('Assets','games.json'), 'r')
     
     data = json.load(my_file)
     #print(data)
