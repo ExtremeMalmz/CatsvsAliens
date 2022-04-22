@@ -1,9 +1,0 @@
-bara något ................. 
-ghjkljvgjkljbhjklvspoåvmavpsmvrf5
-vac
-<<<<<<< HEAD
-
-ERIC
-=======
-Anita är bäst!!!!!!!!
->>>>>>> 692d48616810188d5f047d0b5e5c3cea374d7813

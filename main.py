@@ -1,26 +1,34 @@
-import pygame
-import pygame_menu
+from main_menu import the_main
 
-from NewGame import new_game_main
+import json
 
-pygame.display.set_caption('Grupp 01')
-pygame.init()
-surface = pygame.display.set_mode((900, 700))
+def create_json():
+    '''
+    Creates a JSON file named games.json if it doesn't exist already. 
+    '''
+    try:
+        # Opens the file "gemes.json" in "read" mode
+        my_file = open("games.json", "r")
+        # Reads and converts the file content (JSON) to Python datatype (list)
+        game = json.loads(my_file.read())
+        # Closes the file
+        my_file.close()
+        # Returns the list of every lines in file
+        return game
 
-def set_difficulty(value, difficulty):
-    # Do the job here !
-    pass
+    except FileNotFoundError:
+        # Creates a new file called "gemes.json"
+        my_file = open("games.json", "w")
+        # Writes the basic structure in JSON-format
+        my_file.write(json.dumps([" Boy Wonder"]))
+        my_file.close()
+        # Returns the basic structure as an empty list
+        return []
 
-def start_the_game():
-    new_game_main()
-    pass
 
-menu = pygame_menu.Menu('Cats vs Aliens', 400, 300,
-                       theme=pygame_menu.themes.THEME_BLUE)
-
-menu.add.text_input('Name :', default='Eric Malmström')
-menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
-menu.add.button('Play', start_the_game)
-menu.add.button('Quit', pygame_menu.events.EXIT)
-
-menu.mainloop(surface)
+if __name__ == '__main__':
+    '''
+    if the name of the file is main.py it will run, otherwise not
+    '''
+    create_json()
+    the_main()
