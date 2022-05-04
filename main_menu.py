@@ -4,7 +4,7 @@ import pygame_menu
 import json
 import os
 
-from Levels.level1 import level_1_game_loop
+from Levels.level3 import level_3_game_loop
 #from video import intro
 
 pygame.init()
@@ -38,7 +38,7 @@ def start_the_game():
             #intro()
 
     else:
-        level_1_game_loop()
+        level_3_game_loop()
 
 def MyTextValue(name):
     '''

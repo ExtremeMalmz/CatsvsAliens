@@ -1,7 +1,8 @@
 import pygame, sys, os
 from pygame.locals import *
 
-from Levels.level2 import level_2_game_loop
+from Levels.level3 import level_3_game_loop
+
 
 clock = pygame.time.Clock()
 
@@ -11,12 +12,12 @@ screen = pygame.display.set_mode(WINDOW_SIZE,5,32) # initiate the window
 
 display = pygame.Surface((300,200)) # used as the surface for rendering, which is scaled
 
-def send_to_level_2():
+def send_to_level_3():
     '''
-    Sends the player to level2.py
+    Sends the player to level3.py
     '''
     #print("Du vann!")
-    level_2_game_loop()
+    level_3_game_loop()
 
 
 def send_back_to_main():
@@ -67,9 +68,13 @@ def player_death(rect):
     '''
     Respawns the player in case of death
     '''
-    
-    rect.y = 99
-    rect.x = 50
+    '''
+    Checks if the player is below a certain Y coordinate. In the future it will include enemy collision
+    '''
+
+    if rect.y >= 300:
+        rect.y = 99
+        rect.x = 50
 
     print("DU DOG, men du åkte till himmlen")
     
@@ -122,13 +127,13 @@ def move(rect,movement,tiles):
             collision_types['top'] = True
     return rect, collision_types
 
-def level_1_game_loop():
+def level_2_game_loop():
     '''
-    Game loop for main, basically the main for the game
+    game loop for level 2. Unending game loop until the player wins or quits
     '''
         
     clock = pygame.time.Clock()
-    pygame.display.set_caption('Level Uno')
+    pygame.display.set_caption('Level Dos')
 
     WINDOW_SIZE = (900,700)
 
@@ -138,14 +143,15 @@ def level_1_game_loop():
 
 
 
-    pygame.display.set_caption('Level 1')
+    pygame.display.set_caption('Level 2')
 
-    game_map = load_map(os.path.join('levels', 'level1'))
+    game_map = load_map(os.path.join('levels', 'level2'))
 
     grass_img = pygame.image.load(os.path.join('Assets', 'grass.png'))
     dirt_img = pygame.image.load(os.path.join('Assets','dirt.png'))
     knd_image = pygame.image.load(os.path.join('Assets','knd.png'))
     flag_image = pygame.image.load(os.path.join('Assets','spasskayatower.jpg'))
+    whitebricks_image = pygame.image.load(os.path.join('Assets','whitebricks.jpg'))
     red_image = pygame.image.load(os.path.join('Assets','red.png'))
 
     player_image = pygame.image.load(os.path.join('Assets','player.png')).convert()
@@ -177,7 +183,7 @@ def level_1_game_loop():
 
     while True: # game loop
         
-        display.fill((146,244,255)) # clear screen by filling it with blue
+        display.fill((200,92,106)) # clear screen by filling it with blue
 
         true_scroll[0] += (player_rect.x-true_scroll[0]-152)/20
         true_scroll[1] += (player_rect.y-true_scroll[1]-106)/20
@@ -191,7 +197,7 @@ def level_1_game_loop():
             if background_object[0] == 0.5:
                 pygame.draw.rect(display,(14,222,150),obj_rect)
             else:
-                pygame.draw.rect(display,(9,91,85),obj_rect)
+                pygame.draw.rect(display,(198,202,85),obj_rect)
 
         tile_rects = []
         y = 0
@@ -206,8 +212,8 @@ def level_1_game_loop():
                     display.blit(knd_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '4':
                     display.blit(flag_image, (x * 16-scroll[0], y * 16-scroll[1]))
-                #if tile == '5':
-                #    display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                if tile == '5':
+                    display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '6':
                     display.blit(red_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile != '0':
@@ -293,9 +299,11 @@ def level_1_game_loop():
             print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 715 and player_rect.y == 19:
+        if player_rect.x >= 1071 and player_rect.y == 35:
             print("Win")
-            send_to_level_2()
+            send_to_level_3()
+            #win_level()
+
             
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()
