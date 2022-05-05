@@ -1,24 +1,6 @@
 import pygame, sys, os
 from pygame.locals import *
 
-from Levels.level4 import level_4_game_loop
-
-
-clock = pygame.time.Clock()
-
-WINDOW_SIZE = (900,700)
-
-screen = pygame.display.set_mode(WINDOW_SIZE,5,32) # initiate the window
-
-display = pygame.Surface((300,200)) # used as the surface for rendering, which is scaled
-
-def send_to_level_4():
-    '''
-    Sends the player to level3.py
-    '''
-    #print("Du vann!")
-    level_4_game_loop()
-
 def send_back_to_main():
     '''
     Sends the program back to the main menu file. Python doesnt allow circular imports so I was forced to do it like this
@@ -126,13 +108,13 @@ def move(rect,movement,tiles):
             collision_types['top'] = True
     return rect, collision_types
 
-def level_3_game_loop():
+def level_4_game_loop():
     '''
     game loop for level 3. Unending game loop until the player wins or quits
     '''
         
     clock = pygame.time.Clock()
-    pygame.display.set_caption('Level Dos')
+    pygame.display.set_caption('Level cuatro')
 
     WINDOW_SIZE = (900,700)
 
@@ -142,9 +124,9 @@ def level_3_game_loop():
 
 
 
-    pygame.display.set_caption('Level 3')
+    pygame.display.set_caption('Level 4')
 
-    game_map = load_map(os.path.join('levels', 'level3'))
+    game_map = load_map(os.path.join('levels', 'level4'))
 
     snowrock_img = pygame.image.load(os.path.join('Assets', 'snowrock.png'))
     rock_img = pygame.image.load(os.path.join('Assets','rock.png'))
@@ -300,8 +282,8 @@ def level_3_game_loop():
 
         if player_rect.x >= 1071 and player_rect.y == 35:
             print("Win")
-            send_to_level_4()
-            #win_level()
+            #send_to_level_5()
+            win_level()
 
             
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
