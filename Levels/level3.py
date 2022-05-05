@@ -133,7 +133,7 @@ def level_3_game_loop():
     knd_image = pygame.image.load(os.path.join('Assets','knd.png'))
     flag_image = pygame.image.load(os.path.join('Assets','flag.TIFF'))
     whitebricks_image = pygame.image.load(os.path.join('Assets','whitebricks.jpg'))
-    red_image = pygame.image.load(os.path.join('Assets','red.png'))
+    snow_image = pygame.image.load(os.path.join('Assets','Snow.TIFF'))
 
     player_image = pygame.image.load(os.path.join('Assets','player.png')).convert()
     #original image, needed to make this to make it go back if mirrored
@@ -150,7 +150,7 @@ def level_3_game_loop():
 
     #spawn an enemy
     enemy_image = pygame.image.load(os.path.join('Assets','enemy.png')).convert()
-    enemy_image.set_colorkey((3, 3, 3))
+    enemy_image.set_colorkey((1, 1, 1))
     enemy_rect = pygame.Rect(267, 131, 5, 13)
 
     background_objects = [[0.25,[120,10,70,400]],[0.25,[280,30,40,400]],[0.5,[30,40,40,400]],[0.5,[130,90,100,400]],[0.5,[300,80,120,400]]]
@@ -196,7 +196,7 @@ def level_3_game_loop():
                 if tile == '5':
                     display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '6':
-                    display.blit(red_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(snow_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile != '0':
                     tile_rects.append(pygame.Rect(x*16,y*16,16,16))
                 x += 1
@@ -280,7 +280,7 @@ def level_3_game_loop():
             print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 1300 and player_rect.y == 40:
+        if player_rect.x >= 1075 and player_rect.y == 30:
             print("Win")
             #send_to_level_3()
             win_level()
