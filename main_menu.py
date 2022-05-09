@@ -4,7 +4,7 @@ import pygame_menu
 import json
 import os
 
-from Levels.level4 import level_4_game_loop
+from Levels.level3 import level_3_game_loop
 #from video import intro
 
 pygame.init()
@@ -38,17 +38,29 @@ def start_the_game():
             #intro()
 
     else:
-        level_4_game_loop()
+        level_3_game_loop()
 
+
+'''
+    rad 48: öpnna filen, skriv in namn, stäng filen
+'''
 def MyTextValue(name):
-    '''
-    Gets the name which is in the JSON file
-    '''
-    #print('player name is', name)
-        
-    my_file = open(os.path.join('Assets','games.json'), 'w')
-    my_file.write(json.dumps([name]))
-    my_file.close()   
+
+    y = {"Player_Name": name}
+
+    add_json(y)
+
+
+def add_json(new_data, filename=(os.path.join('Assets','games.json'))):
+        with open(filename,'r+') as file:
+            # First we load existing data into a dict.
+            file_data = json.load(file)
+            # Join new_data with file_data inside emp_details
+            file_data["games"].append(new_data)
+            # Sets file's current position at offset.
+            file.seek(0)
+            # convert back to json.
+            json.dump(file_data, file, indent = 4)
 
 
 def the_main():
@@ -70,15 +82,13 @@ def the_main():
                         theme=pygame_menu.themes.THEME_BLUE)
 
     
+    with open(os.path.join('Assets','games.json'), 'r') as f:
+        data = json.load(f)
 
-    my_file = open(os.path.join('Assets','games.json'), 'r')
-    
-    data = json.load(my_file)
-    #print(data)
-    
+
     for i in data:
-        name = data[0]
-    my_file.close()
+        name = i[0]
+
 
     menu.add.text_input('Name : ', default= name, onchange= MyTextValue)
     menu.add.selector('Difficulty :', [('Catnip', 1), ('Food', 2), ('Veternarian', 3)], onchange=set_difficulty)

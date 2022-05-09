@@ -145,7 +145,7 @@ def level_4_game_loop():
 
     jelly_image = pygame.image.load(os.path.join('Assets', 'jelly.png'))
     ice_image = pygame.image.load(os.path.join('Assets','Snow.TIFF'))
-    flag_image = pygame.image.load(os.path.join('Assets','spasskayatower.jpg'))
+    flag_image = pygame.image.load(os.path.join('Assets','flag.tiff'))
     whitebricks_image = pygame.image.load(os.path.join('Assets','whitebricks.jpg'))
     snowrock_image = pygame.image.load(os.path.join('Assets','snowrock.png'))
     tree_image = pygame.image.load(os.path.join('Assets','tree.png'))
