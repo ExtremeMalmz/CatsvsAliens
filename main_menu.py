@@ -23,13 +23,25 @@ def start_the_game():
     '''
     Sends you to the level 1 game loop unless your name is Gustav which if you are just enjoy the ride
     '''
+
     pygame.mixer.music.stop()
 
     my_file = open(os.path.join('Assets','games.json'), 'r')
     data = json.load(my_file)
     #print(data)
 
-    
+    with open(os.path.join('Assets','games.json'), 'r+') as f:
+        data = json.load(f)
+
+                    
+        for i in data['Games']:
+            while i['Player_Life_amount'] <9:
+                i['Player_Life_amount'] += 1
+            
+
+    with open(os.path.join('Assets','games.json'), 'w') as f:
+        json.dump(data, f, indent = 2 )
+
 
     for i in data:
         i = i.upper()
@@ -40,29 +52,37 @@ def start_the_game():
     else:
         level_1_game_loop()
         
-        
-
 
 '''
     rad 48: öpnna filen, skriv in namn, stäng filen
 '''
-
+"""
 def MyTextValue(name):
       data = {"Games": [{"Player_Name": name, "Player_Level" : 0, "Player_Life_amount" : 9}]}
       jsonString = json.dumps(data, indent = 4)
       jsonFile = open(os.path.join('Assets','games.json'), "w")
       jsonFile.write(jsonString)
       jsonFile.close()
-
+"""
 """
 def MyTextValue(name):
 
     y = {"Player_Name": name}
 
     add_json(y)
+"""
+def MyTextValue(name):
+    with open(os.path.join('Assets','games.json'), 'r+') as f:
+        data = json.load(f)
 
+    
+        for i in data['Games']:
+            i['Player_Name'] = name
 
+    with open(os.path.join('Assets','games.json'), 'w') as f:
+        json.dump(data, f, indent = 2 )
 
+"""
 def add_json(new_data, filename=(os.path.join('Assets','games.json'))):
         with open(filename,'r+') as file:
             # First we load existing data into a dict.

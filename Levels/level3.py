@@ -1,4 +1,4 @@
-import pygame, sys, os
+import pygame, sys, os, json
 from pygame.locals import *
 
 from Levels.level4 import level_4_game_loop
@@ -16,6 +16,22 @@ def send_to_level_4():
     '''
     Sends the player to level3.py
     '''
+
+    '''
+    #Gives the player new life of 9 
+    with open(os.path.join('Assets','games.json'), 'r+') as f:
+        data = json.load(f)
+
+                    
+        for i in data['Games']:
+            while i['Player_Life_amount'] <9:
+                i['Player_Life_amount'] += 1
+            
+
+    with open(os.path.join('Assets','games.json'), 'w') as f:
+        json.dump(data, f, indent = 2 )
+    '''
+
     #print("Du vann!")
     level_4_game_loop()
 
@@ -77,7 +93,19 @@ def player_death(rect):
 
     print("DU DOG, men du åkte till himmlen")
     
-    
+    with open(os.path.join('Assets','games.json'), 'r+') as f:
+        data = json.load(f)
+
+                
+        for i in data['Games']:
+            i['Player_Life_amount'] = i['Player_Life_amount'] - 1
+            
+            
+            if i['Player_Life_amount'] == i['Player_Life_amount'] == 0:
+                send_back_to_main()
+
+    with open(os.path.join('Assets','games.json'), 'w') as f:
+        json.dump(data, f, indent = 2 )
         
 
 def load_map(path):
@@ -140,7 +168,15 @@ def level_3_game_loop():
 
     display = pygame.Surface((300,200)) # used as the surface for rendering, which is scaled
 
+    with open(os.path.join('Assets','games.json'), 'r+') as f:
+            data = json.load(f)
 
+        
+            for i in data['Games']:
+                i['Player_Level'] = 3
+
+    with open(os.path.join('Assets','games.json'), 'w') as f:
+            json.dump(data, f, indent = 2 )
 
     pygame.display.set_caption('Level 3')
 
