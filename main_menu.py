@@ -4,7 +4,7 @@ import pygame_menu
 import json
 import os
 
-from Levels.level3 import level_3_game_loop
+from Levels.level1 import level_1_game_loop
 #from video import intro
 
 pygame.init()
@@ -38,17 +38,29 @@ def start_the_game():
             #intro()
 
     else:
-        level_3_game_loop()
+        level_1_game_loop()
+        
+        
 
 
 '''
     rad 48: öpnna filen, skriv in namn, stäng filen
 '''
+
+def MyTextValue(name):
+      data = {"Games": [{"Player_Name": name, "Player_Level" : 0, "Player_Life_amount" : 9}]}
+      jsonString = json.dumps(data, indent = 4)
+      jsonFile = open(os.path.join('Assets','games.json'), "w")
+      jsonFile.write(jsonString)
+      jsonFile.close()
+
+"""
 def MyTextValue(name):
 
     y = {"Player_Name": name}
 
     add_json(y)
+
 
 
 def add_json(new_data, filename=(os.path.join('Assets','games.json'))):
@@ -61,7 +73,7 @@ def add_json(new_data, filename=(os.path.join('Assets','games.json'))):
             file.seek(0)
             # convert back to json.
             json.dump(file_data, file, indent = 4)
-
+"""
 
 def the_main():
     '''
@@ -83,11 +95,12 @@ def the_main():
 
     
     with open(os.path.join('Assets','games.json'), 'r') as f:
-        data = json.load(f)
+        data = json.loads(f.read())
 
+        for i in data['Games']:
+            name = i['Player_Name']
+            
 
-    for i in data:
-        name = i[0]
 
 
     menu.add.text_input('Name : ', default= name, onchange= MyTextValue)

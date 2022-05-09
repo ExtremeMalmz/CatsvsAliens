@@ -74,7 +74,6 @@ def player_death(rect):
 
     print("DU DOG, men du åkte till himmlen")
     
-    
         
 
 def load_map(path):
@@ -298,7 +297,7 @@ def level_4_game_loop():
             print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 2000 and player_rect.y == 45:
+        if player_rect.x >= 1560 and player_rect.y == 35:
             print("Win")
             #send_to_level_5()
             win_level()

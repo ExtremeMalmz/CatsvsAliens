@@ -15,7 +15,8 @@ def create_json():
         return game
 
     except FileNotFoundError:
-        data = {"games": [{"Player_name": "Boy Wonder"}]}
+        data = {"Games": [{"Player_Name": "Boy Wonder", "Player_Level" : 0, "Player_Life_amount" : 9}]}
+
         # Creates a new file called "gemes.json"
         my_file = open(os.path.join('Assets','games.json'), 'w')
         # Writes the basic structure in JSON-format

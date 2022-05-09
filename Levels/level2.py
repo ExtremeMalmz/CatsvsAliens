@@ -72,9 +72,9 @@ def player_death(rect):
     Checks if the player is below a certain Y coordinate. In the future it will include enemy collision
     '''
 
-    if rect.y >= 300:
-        rect.y = 99
-        rect.x = 50
+    #if rect.y >= 300:
+    rect.y = 99
+    rect.x = 50
 
     print("DU DOG, men du åkte till himmlen")
     
