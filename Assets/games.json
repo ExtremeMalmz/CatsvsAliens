@@ -2,8 +2,8 @@
   "Games": [
     {
       "Player_Name": "sally",
-      "Player_Level": 1,
-      "Player_Life_amount": 9
+      "Player_Level": 4,
+      "Player_Life_amount": 3
     }
   ]
 }
