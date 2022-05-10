@@ -300,8 +300,8 @@ def level_1_game_loop():
                             #Spawns a rect and blits it(displays) it at the width and height coordinates of rect IDK how this worked but it does
                             super_bullet_rect = pygame.Rect(playerXcoordinate+20, playerYcoordinate, 50, 14)
                             display.blit(super_bullet_image,(player_rect.height+135,player_rect.width+100))
-                            #bulletSound = mixer.Sound("laser.wav")
-                            #bulletSound.play()
+                            bulletSound = mixer.Sound("sound/9mm.mp3")
+                            bulletSound.play()
 
                             if super_bullet_rect.colliderect(enemy_rect):
                                 #enemy_rect.x,enemy_rect.y = -1000,-1000
