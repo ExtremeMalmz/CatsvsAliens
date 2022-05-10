@@ -1,9 +1,9 @@
 {
-    "Games": [
-        {
-            "Player_Name": "Boy Wonder",
-            "Player_Level": 0,
-            "Player_Life_amount": 9
-        }
-    ]
+  "Games": [
+    {
+      "Player_Name": "Boy Wondr",
+      "Player_Level": 4,
+      "Player_Life_amount": 9
+    }
+  ]
 }

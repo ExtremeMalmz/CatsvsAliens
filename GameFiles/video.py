@@ -11,6 +11,10 @@ vid = Video(os.path.join('MusicVideos',"EvenFunnierVideo.mp4"))
 vid.set_size((900,700))
 vid.toggle_pause()
 
+vid1 = Video(os.path.join('MusicVideos',"MoreFunnierVideo.mp4"))
+vid1.set_size((900,700))
+vid1.toggle_pause()
+
 def intro():
     '''
     plays the video which is entered as the vid variable
@@ -35,4 +39,28 @@ def intro():
 
             vid.restart()
             exit()
-            
+
+def outro():
+    '''
+    plays the video which is entered
+    '''
+    pygame.display.set_caption('Hi Chris')
+    vid1.toggle_pause()
+
+    vid1.set_volume(30)
+    start = time.time()
+    
+    
+    while True:
+        
+        vid1.draw(surface,(0,0))
+        pygame.display.update()
+
+        duration = time.time() - start
+        print(duration)
+
+        if duration >= 30:
+            #print("Terminate program")
+
+            vid1.restart()
+            exit()
