@@ -1,5 +1,10 @@
+from webbrowser import get
 import pygame, sys
 from pygame.locals import *
+
+from pygame import mixer
+from loading_screen import loading_screen_main
+
 
 def send_back_to_main():
     '''
@@ -40,7 +45,9 @@ def win_level():
     sends the program back to the main menu
     '''
     print("Du vann!")
-    send_back_to_main()
+    loading_screen_main()
+    
+    
 
 
 
@@ -130,23 +137,53 @@ def level_1_game_loop():
     flag_image = pygame.image.load('spasskayatower.jpg')
     red_image = pygame.image.load('red.png')
 
-    player_image = pygame.image.load('player.png').convert()
+    #bullet test
+    
+    
+    
+    bullet_rect = pygame.Rect(0, 0, 16,16)
+
+    
+    
+
+    
     #original image, needed to make this to make it go back if mirrored
     player_image_original = pygame.image.load('player.png').convert()
     #mirrored for left movement
     player_image_mirror = pygame.image.load('playermirror.png').convert()
+    
+    #player image is original (facing right by default)
+    player_image = player_image_original
 
-    player_image.set_colorkey((255, 255, 255))
-    player_image_original.set_colorkey((255, 255, 255))
+    #the press S to hunch image
+    player_image_hunch = pygame.image.load('playerhunched.png').convert()
+    #sets color key as well
+    player_image_hunch.set_colorkey((0, 0, 0))
+
+    #same stuff as above
+    player_image_hunch_mirrored = pygame.image.load('playermirrorhunched.png').convert()
+    player_image_hunch_mirrored.set_colorkey((0,0,0))
+    
+
+    player_image.set_colorkey((0, 0, 0))
+    player_image_original.set_colorkey((0, 0, 0))
     player_image_mirror.set_colorkey((255, 255, 255))
 
-    #this puts the player at the location of the coordinates
-    player_rect = pygame.Rect(100,100,5,13)
+    #this puts the player at the location of the coordinates (x,x,Y,Y) Y Y is player image size!!!
+    player_rect = pygame.Rect(100,100, 16,32)
+
+
+
+    
 
     #spawn an enemy
     enemy_image = pygame.image.load('enemy.png').convert()
-    enemy_image.set_colorkey((0, 0, 0))
-    enemy_rect = pygame.Rect(267, 131, 5, 13)
+    enemy_image.set_colorkey((1, 0, 0))
+    enemy_rect = pygame.Rect(267, 120, 16, 16)
+
+    enemy_image_2 = pygame.image.load('enemy.png').convert()
+    enemy_rect_2 = pygame.Rect(267, 120, 16,16)
+    
 
     background_objects = [[0.25,[120,10,70,400]],[0.25,[280,30,40,400]],[0.5,[30,40,40,400]],[0.5,[130,90,100,400]],[0.5,[300,80,120,400]]]
 
@@ -157,8 +194,27 @@ def level_1_game_loop():
 
     true_scroll = [0,0]
 
+    #you WILL have to do one in an opposite to get it real
+    super_bullet_image = pygame.image.load('BULLETWORKPLEASE.png').convert()
+    #THIS IS SHOOT LEFT
+    super_bullet_image_mirror = pygame.image.load('BULLETWORKPLEASEmirror.png').convert()
+
     while True: # game loop
+
+        playerXcoordinate = player_rect.x
+        playerYcoordinate = player_rect.y
+
         
+        #the dimensions of the rect (last 2 numbers) needs to be fine tuned 
+        
+        
+
+        
+        
+        
+
+        
+
         display.fill((146,244,255)) # clear screen by filling it with blue
 
         true_scroll[0] += (player_rect.x-true_scroll[0]-152)/20
@@ -230,19 +286,60 @@ def level_1_game_loop():
                         player_image = player_image_original
                 if event.key == K_LEFT or event.key == K_a:
                     moving_left = True
-                    player_image = player_image_mirror
+                    if player_image == player_image_hunch:
+                       player_image = player_image_hunch_mirrored
+                    else:
+                        player_image = player_image_mirror
+                if event.key == K_SPACE:
+                    keys = pygame.key.get_pressed()
+                    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+                        print("Crouch cant shoot")
+                    else:
+                        if player_image == player_image_original:
+                            print("SHOOT RIGHT")
+                            #Spawns a rect and blits it(displays) it at the width and height coordinates of rect IDK how this worked but it does
+                            super_bullet_rect = pygame.Rect(playerXcoordinate+20, playerYcoordinate, 50, 14)
+                            display.blit(super_bullet_image,(player_rect.height+135,player_rect.width+100))
+                            #bulletSound = mixer.Sound("laser.wav")
+                            #bulletSound.play()
+
+                            if super_bullet_rect.colliderect(enemy_rect):
+                                #enemy_rect.x,enemy_rect.y = -1000,-1000
+                                print("111 enemy TWO death")
+                            
+                            if super_bullet_rect.colliderect(enemy_rect_2):
+                                #enemy_rect.x,enemy_rect.y = -1000,-1000
+                                print("111 enemy death")
+                                
+
+                        elif player_image == player_image_mirror:
+                            print("SHOOT LEFT")
+                            super_bullet_mirror_rect = pygame.Rect(playerXcoordinate-30, playerYcoordinate,50,14)
+                            
+                            display.blit(super_bullet_image_mirror,(player_rect.height+85,player_rect.width+100))
+                            #bulletSound = mixer.Sound("laser.wav")
+                            #bulletSound.play()
+                                                    
+                            if super_bullet_mirror_rect.colliderect(enemy_rect):
+                                #enemy_rect.x,enemy_rect.y = -1000,-1000
+                                print("222 enemy death")    
+
+
                 if event.key == K_UP or event.key == K_w:
                     if air_timer < 6:
                         vertical_momentum = -5
+                if event.key == K_DOWN or event.key == K_s:
+                    player_rect = pygame.Rect(playerXcoordinate,playerYcoordinate, 16,14)
+                    player_image = player_image_hunch
     
             if event.type == KEYUP:
                 if event.key == K_RIGHT or event.key == K_d:
                     moving_right = False
                 if event.key == K_LEFT or event.key == K_a:
                     moving_left = False
-                if event.key == K_SPACE:
-                    send_back_to_main()
-                    print("Pressed SPACE")
+                if event.key == K_DOWN or event.key == K_s:
+                    player_rect = pygame.Rect(playerXcoordinate,playerYcoordinate, 16,32)
+                    player_image = player_image_original
 
         #kollar om karaktären ska dö
         if player_rect.y >= 300 :
@@ -259,6 +356,8 @@ def level_1_game_loop():
         #the enemy
         display.blit(enemy_image,(enemy_rect.x-scroll[0],enemy_rect.y-scroll[1]))
 
+        display.blit(enemy_image_2,(enemy_rect_2.x-scroll[0],enemy_rect_2.y-scroll[1]))
+
         if enemy_rect.x == 32 or enemy_rect.x == 267:
             direction = enemy_movement_direction(enemy_rect)
             #print(direction)
@@ -266,20 +365,19 @@ def level_1_game_loop():
         enemy_movement(enemy_rect,direction)
         #print(enemy_rect.x)
 
-        #old collision 
-        #if enemy_rect.x == player_rect.x and enemy_rect.y == player_rect.y:
-        #    print("collision!")
         
         #new collision handler
         if enemy_rect.colliderect(player_rect):
             print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 715 and player_rect.y == 19:
+    
+
+        if player_rect.x >= 267: #and player_rect.y == 19:
             print("Win")
             win_level()
-            
+        
+
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()
         clock.tick(60)
-
