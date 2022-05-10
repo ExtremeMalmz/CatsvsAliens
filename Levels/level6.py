@@ -1,7 +1,7 @@
 import pygame, sys, os, json
 from pygame.locals import *
 
-from Levels.level5 import level_5_game_loop
+#from Levels.level5 import level_5_game_loop
 
 clock = pygame.time.Clock()
 
@@ -11,7 +11,7 @@ screen = pygame.display.set_mode(WINDOW_SIZE,5,32) # initiate the window
 
 display = pygame.Surface((300,200)) # used as the surface for rendering, which is scaled
 
-
+"""
 def send_to_level_5():
     
     #Sends the player to level5.py
@@ -33,7 +33,7 @@ def send_to_level_5():
     
     #print("Du vann!")
     level_5_game_loop()
-
+"""
 
 def send_back_to_main():
     '''
@@ -149,7 +149,7 @@ def move(rect,movement,tiles):
             collision_types['top'] = True
     return rect, collision_types
 
-def level_4_game_loop():
+def level_6_game_loop():
     '''
     Game loop for main, basically the main for the game
     '''
@@ -335,8 +335,8 @@ def level_4_game_loop():
 
         if player_rect.x >= 1560 and player_rect.y == 35:
             print("Win")
-            send_to_level_5()
-            #win_level()
+            #send_to_level_5()
+            win_level()
             
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()

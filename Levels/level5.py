@@ -1,7 +1,8 @@
 import pygame, sys, os, json
 from pygame.locals import *
 
-from Levels.level5 import level_5_game_loop
+from Levels.level6 import level_6_game_loop
+
 
 clock = pygame.time.Clock()
 
@@ -11,10 +12,10 @@ screen = pygame.display.set_mode(WINDOW_SIZE,5,32) # initiate the window
 
 display = pygame.Surface((300,200)) # used as the surface for rendering, which is scaled
 
-
-def send_to_level_5():
-    
-    #Sends the player to level5.py
+def send_to_level_6():
+    '''
+    Sends the player to level3.py
+    '''
 
     '''
     #Gives the player new life of 9 
@@ -30,10 +31,9 @@ def send_to_level_5():
     with open(os.path.join('Assets','games.json'), 'w') as f:
         json.dump(data, f, indent = 2 )
     '''
-    
-    #print("Du vann!")
-    level_5_game_loop()
 
+    #print("Du vann!")
+    level_6_game_loop()
 
 def send_back_to_main():
     '''
@@ -83,7 +83,11 @@ def player_death(rect):
     '''
     Respawns the player in case of death
     '''
-    
+    '''
+    Checks if the player is below a certain Y coordinate. In the future it will include enemy collision
+    '''
+
+    #if rect.y >= 300:
     rect.y = 99
     rect.x = 50
 
@@ -101,7 +105,8 @@ def player_death(rect):
                 send_back_to_main()
 
     with open(os.path.join('Assets','games.json'), 'w') as f:
-        json.dump(data, f, indent = 2 ) 
+        json.dump(data, f, indent = 2 )
+        
 
 def load_map(path):
     '''
@@ -149,13 +154,13 @@ def move(rect,movement,tiles):
             collision_types['top'] = True
     return rect, collision_types
 
-def level_4_game_loop():
+def level_5_game_loop():
     '''
-    Game loop for main, basically the main for the game
+    game loop for level 3. Unending game loop until the player wins or quits
     '''
         
     clock = pygame.time.Clock()
-    pygame.display.set_caption('Level cuatro')
+    pygame.display.set_caption('Level Dos')
 
     WINDOW_SIZE = (900,700)
 
@@ -168,23 +173,21 @@ def level_4_game_loop():
 
         
             for i in data['Games']:
-                i['Player_Level'] = 4
+                i['Player_Level'] = 3
 
     with open(os.path.join('Assets','games.json'), 'w') as f:
             json.dump(data, f, indent = 2 )
 
+    pygame.display.set_caption('Level 3')
 
-    pygame.display.set_caption('Level 4')
+    game_map = load_map(os.path.join('levels', 'level3'))
 
-    game_map = load_map(os.path.join('levels', 'level4'))
-
-    jelly_image = pygame.image.load(os.path.join('Assets', 'jelly.png'))
-    ice_image = pygame.image.load(os.path.join('Assets','Snow.TIFF'))
-    flag_image = pygame.image.load(os.path.join('Assets','flag.tiff'))
+    snowrock_img = pygame.image.load(os.path.join('Assets', 'snowrock.png'))
+    rock_img = pygame.image.load(os.path.join('Assets','rock.png'))
+    knd_image = pygame.image.load(os.path.join('Assets','knd.png'))
+    flag_image = pygame.image.load(os.path.join('Assets','flag.TIFF'))
     whitebricks_image = pygame.image.load(os.path.join('Assets','whitebricks.jpg'))
-    snowrock_image = pygame.image.load(os.path.join('Assets','snowrock.png'))
-    tree_image = pygame.image.load(os.path.join('Assets','tree.png'))
-    
+    snow_image = pygame.image.load(os.path.join('Assets','Snow.TIFF'))
 
     player_image = pygame.image.load(os.path.join('Assets','player.png')).convert()
     #original image, needed to make this to make it go back if mirrored
@@ -214,8 +217,8 @@ def level_4_game_loop():
     true_scroll = [0,0]
 
     while True: # game loop
-        #146,244,255
-        display.fill((19,88,115)) # clear screen by filling it with blue
+        
+        display.fill((200,92,106)) # clear screen by filling it with blue
 
         true_scroll[0] += (player_rect.x-true_scroll[0]-152)/20
         true_scroll[1] += (player_rect.y-true_scroll[1]-106)/20
@@ -223,13 +226,13 @@ def level_4_game_loop():
         scroll[0] = int(scroll[0])
         scroll[1] = int(scroll[1])
 
-        pygame.draw.rect(display,(8, 37, 48),pygame.Rect(0,120,300,80))
+        pygame.draw.rect(display,(7,80,75),pygame.Rect(0,120,300,80))
         for background_object in background_objects:
             obj_rect = pygame.Rect(background_object[1][0]-scroll[0]*background_object[0],background_object[1][1]-scroll[1]*background_object[0],background_object[1][2],background_object[1][3])
             if background_object[0] == 0.5:
-                pygame.draw.rect(display,(167,192,203),obj_rect)
+                pygame.draw.rect(display,(14,222,150),obj_rect)
             else:
-                pygame.draw.rect(display,(8, 37, 48),obj_rect)
+                pygame.draw.rect(display,(198,202,85),obj_rect)
 
         tile_rects = []
         y = 0
@@ -237,19 +240,17 @@ def level_4_game_loop():
             x = 0
             for tile in layer:
                 if tile == '1':
-                    display.blit(jelly_image,(x*16-scroll[0],y*16-scroll[1]))
+                    display.blit(rock_img,(x*16-scroll[0],y*16-scroll[1]))
                 if tile == '2':
-                    display.blit(ice_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(snowrock_img,(x*16-scroll[0],y*16-scroll[1]))
                 if tile == '3':
-                    display.blit(flag_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(knd_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '4':
-                    display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(flag_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '5':
-                    display.blit(jelly_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '6':
-                    display.blit(snowrock_image, (x * 16-scroll[0], y * 16-scroll[1]))
-                if tile == '7':
-                    display.blit(tree_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                    display.blit(snow_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile != '0':
                     tile_rects.append(pygame.Rect(x*16,y*16,16,16))
                 x += 1
@@ -333,10 +334,11 @@ def level_4_game_loop():
             print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 1560 and player_rect.y == 35:
+        if player_rect.x >= 1071 and player_rect.y == 35:
             print("Win")
-            send_to_level_5()
+            send_to_level_6()
             #win_level()
+
             
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
         pygame.display.update()
