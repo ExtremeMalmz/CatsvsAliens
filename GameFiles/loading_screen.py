@@ -27,7 +27,7 @@ def loading_screen_main(levelNumber):
     loadingMessage = font.render("Loading the game", True, (25, 255, 255))
     star = font.render("***", True, (25, 255, 255))
         
-    einz,zwei,drei = random.randint(0,500),random.randint(500,700),random.randint(700,1000)
+    einz,zwei,drei = random.randint(0,50),random.randint(50,70),random.randint(70,100)
 
     timer = 0
 

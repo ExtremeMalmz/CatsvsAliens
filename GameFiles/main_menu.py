@@ -11,7 +11,6 @@ import os
 
 from GameFiles.loading_screen import loading_screen_main
 
-from GameFiles.video import intro, outro
 
 pygame.init()
 
@@ -55,9 +54,9 @@ def start_the_game():
 
         for i in data['Games']:  
             if (i['Player_Name'].upper()).strip() == "GUSTAV":
-                intro()
+                pass
             if (i['Player_Name'].upper()).strip() == "CHRIS":
-                outro()
+                pass
             else:
                 if (i['Player_Life_amount']) != 9:
                     give_9_lives()
