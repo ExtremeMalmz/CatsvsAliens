@@ -153,10 +153,10 @@ def second_boss_fight_main():
     player_image_hunch_mirrored.set_colorkey((0,0,0))
 
     super_bullet_image = pygame.image.load(os.path.join('Assets','BULLETWORKPLEASE.png')).convert()
-    #super_bullet_image.set_colorkey((0,0,0))
+    super_bullet_image.set_colorkey((0,0,0))
 
     super_bullet_image_mirror = pygame.image.load(os.path.join('Assets','BULLETWORKPLEASEmirror.png')).convert()
-    #super_bullet_image_mirror.set_colorkey((0,0,0))
+    super_bullet_image_mirror.set_colorkey((0,0,0))
 
     #original 
     player_rect = pygame.Rect(32,152,16,32)

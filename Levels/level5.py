@@ -169,8 +169,11 @@ def level_5_game_loop():
     player_image_hunch_mirrored.set_colorkey((0,0,0))
 
     super_bullet_image = pygame.image.load(os.path.join('Assets','BULLETWORKPLEASE.png')).convert()
-    super_bullet_image_mirror = pygame.image.load(os.path.join('Assets','BULLETWORKPLEASEmirror.png')).convert()
+    super_bullet_image.set_colorkey((0,0,0))
 
+    super_bullet_image_mirror = pygame.image.load(os.path.join('Assets','BULLETWORKPLEASEmirror.png')).convert()
+    super_bullet_image_mirror.set_colorkey((0,0,0))
+    
     player_rect = pygame.Rect(100,100,16,32)
 
     enemy_image = pygame.image.load(os.path.join('Assets','enemy.png')).convert()
