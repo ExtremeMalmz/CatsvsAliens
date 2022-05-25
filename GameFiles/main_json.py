@@ -12,7 +12,7 @@ def create_json():
 
         return game
     except FileNotFoundError:
-        data = {"Games": [{"Player_Name": "Boy Wonder", "Player_Level" : 0, "Player_Life_amount" : 9}]}
+        data = {"Games": [{"Player_Name": "Boy Wonder", "Player_Level" : 0, "Player_Life_amount" : "9"}]}
 
         my_file = open(os.path.join('Assets','games.json'), 'w')
         my_file.write(json.dumps(data, indent = 4))
