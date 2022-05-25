@@ -1,6 +1,10 @@
 import pygame, sys, os, json
 from pygame.locals import *
 
+import pygame as pg
+
+pg.init()
+
 from Levels.level6 import level_6_game_loop
 
 
@@ -324,7 +328,22 @@ def level_5_game_loop():
 
         if player_rect.x >= 1552 and player_rect.y == 64:
             send_to_level_6()
+
+         # 1. pickes player life from json file: 
+        with open(os.path.join('Assets','games.json'), 'r') as f:
+            data = json.loads(f.read())
+
+            for i in data['Games']:
+                life = i['Player_Life_amount']
+
+        # 2. Show player life in pygame display: 
+        FONT = pg.font.Font(None, 42)
+
+        text_surface = FONT.render('Life: ' + str(life), True, pg.Color('dodgerblue1'))
+        text_rect = text_surface.get_rect()
+        text_rect.midleft = (screen.get_width()-100, 38)
             
         screen.blit(pygame.transform.scale(display,WINDOW_SIZE),(0,0))
+        screen.blit(text_surface, text_rect)
         pygame.display.update()
         clock.tick(60)
