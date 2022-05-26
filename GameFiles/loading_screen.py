@@ -4,7 +4,7 @@ import pygame, sys
 from pygame.locals import *
 import random
 
-from Levels.level1 import level_1_game_loop
+from Levels.level4 import level_4_game_loop
 
 def loading_screen_main(levelNumber):
     '''
@@ -49,6 +49,6 @@ def loading_screen_main(levelNumber):
                     screen.blit(star, (500, 450))
                     if zwei <= timer:
                         if levelNumber == "1":
-                            level_1_game_loop()
+                            level_4_game_loop()
                         
         pygame.display.update()
