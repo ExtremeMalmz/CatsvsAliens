@@ -2,6 +2,7 @@ from main_menu import the_main
 
 import json
 
+
 def create_json():
     '''
     Creates a JSON file named games.json if it doesn't exist already. 
@@ -18,7 +19,7 @@ def create_json():
 
     except FileNotFoundError:
         # Creates a new file called "gemes.json"
-        my_file = open("games.json", "w")
+        my_file = open("games.json", "w") 
         # Writes the basic structure in JSON-format
         my_file.write(json.dumps([" Boy Wonder"]))
         my_file.close()
