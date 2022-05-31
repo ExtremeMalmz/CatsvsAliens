@@ -1,18 +1,36 @@
-from webbrowser import get
 import pygame
 import sys
+import os
+import json
 from pygame.locals import *
 
-from pygame import mixer
-from loading_screen import loading_screen_main
+from Levels.first_boss_fight import first_boss_fight_main
+
+
+def player_coordinates_printer(playerX, playerY):
+    '''
+    prints player rects x and y coordinates, is only for debugging
+    '''
+    print("X is")
+    print(playerX)
+
+    print("Y is")
+    print(playerY)
+
+
+def send_to_boss_fight_1():
+    '''
+    Sends the player to level5.py
+    '''
+    first_boss_fight_main()
 
 
 def send_back_to_main():
     '''
     Sends the program back to the main menu file. Python doesnt allow circular imports so I was forced to do it like this
     '''
-    import main_menu
-    returnToMain = main_menu.the_main()
+    import GameFiles.main_menu
+    returnToMain = GameFiles.main_menu.the_main()
     returnToMain
 
 
@@ -20,15 +38,11 @@ def enemy_movement_direction(enemy):
     '''
     Returns the enemy Ai moving direction
     '''
-    # print(enemy.x) 32 267
-    #xCoordinate = enemy.x
     if enemy.x == 32:
-        #print("Move right")
         direction = "right"
         return direction
 
     if enemy.x == 267:
-        #print("Move left")
         direction = "left"
         return direction
 
@@ -43,23 +57,24 @@ def enemy_movement(enemy, direction):
         enemy.x += 1
 
 
-def win_level():
-    '''
-    sends the program back to the main menu
-    '''
-    print("Du vann!")
-    loading_screen_main()
-
-
 def player_death(rect):
     '''
     Respawns the player in case of death
     '''
+    rect.y = 96
+    rect.x = 16
 
-    rect.y = 99
-    rect.x = 50
+    with open(os.path.join('Assets', 'games.json'), 'r+') as f:
+        data = json.load(f)
 
-    print("DU DOG, men du åkte till himmlen")
+        for i in data['Games']:
+            i['Player_Life_amount'] = i['Player_Life_amount'] - 1
+
+            if i['Player_Life_amount'] == i['Player_Life_amount'] == 0:
+                send_back_to_main()
+
+    with open(os.path.join('Assets', 'games.json'), 'w') as f:
+        json.dump(data, f, indent=2)
 
 
 def load_map(path):
@@ -111,67 +126,74 @@ def move(rect, movement, tiles):
     return rect, collision_types
 
 
-def level_1_game_loop():
+def level_9_game_loop():
     '''
     Game loop for main, basically the main for the game
     '''
-
-    clock = pygame.time.Clock()
-    pygame.display.set_caption('Level Uno')
-
     WINDOW_SIZE = (900, 700)
 
-    screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)  # initiate the window
+    screen = pygame.display.set_mode(WINDOW_SIZE, 5, 32)
 
-    # used as the surface for rendering, which is scaled
     display = pygame.Surface((300, 200))
 
-    pygame.display.set_caption('Level 1')
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('Level cuatro')
 
-    game_map = load_map('level1')
+    with open(os.path.join('Assets', 'games.json'), 'r+') as f:
+        data = json.load(f)
 
-    grass_img = pygame.image.load('grass.png')
-    dirt_img = pygame.image.load('dirt.png')
-    knd_image = pygame.image.load('knd.png')
-    flag_image = pygame.image.load('spasskayatower.jpg')
-    red_image = pygame.image.load('red.png')
+        for i in data['Games']:
+            i['Player_Level'] = 4
 
-    # bullet test
+    with open(os.path.join('Assets', 'games.json'), 'w') as f:
+        json.dump(data, f, indent=2)
 
-    bullet_rect = pygame.Rect(0, 0, 16, 16)
+    pygame.display.set_caption('Level 9')
 
-    # original image, needed to make this to make it go back if mirrored
-    player_image_original = pygame.image.load('player.png').convert()
-    # mirrored for left movement
-    player_image_mirror = pygame.image.load('playermirror.png').convert()
+    game_map = load_map(os.path.join('levels', 'level9'))
 
-    # player image is original (facing right by default)
-    player_image = player_image_original
+    snowblock_image = pygame.image.load(
+        os.path.join('Assets', 'snowblock.png'))
+    ice_image = pygame.image.load(os.path.join('Assets', 'Snow.TIFF'))
+    flag_image = pygame.image.load(os.path.join('Assets', 'flag.tiff'))
+    whitebricks_image = pygame.image.load(
+        os.path.join('Assets', 'whitebricks.jpg'))
+    snowrock_image = pygame.image.load(os.path.join('Assets', 'snowrock.png'))
+    tree4_image = pygame.image.load(os.path.join('Assets', 'tree4.png'))
 
-    # the press S to hunch image
-    player_image_hunch = pygame.image.load('playerhunched.png').convert()
-    # sets color key as well
-    player_image_hunch.set_colorkey((0, 0, 0))
-
-    # same stuff as above
-    player_image_hunch_mirrored = pygame.image.load(
-        'playermirrorhunched.png').convert()
-    player_image_hunch_mirrored.set_colorkey((0, 0, 0))
+    player_image = pygame.image.load(
+        os.path.join('Assets', 'player.png')).convert()
+    player_image_original = pygame.image.load(
+        os.path.join('Assets', 'player.png')).convert()
+    player_image_mirror = pygame.image.load(
+        os.path.join('Assets', 'playermirror.png')).convert()
 
     player_image.set_colorkey((0, 0, 0))
     player_image_original.set_colorkey((0, 0, 0))
-    player_image_mirror.set_colorkey((255, 255, 255))
+    player_image_mirror.set_colorkey((0, 0, 0))
 
-    # this puts the player at the location of the coordinates (x,x,Y,Y) Y Y is player image size!!!
+    player_image_hunch = pygame.image.load(
+        os.path.join('Assets', 'playerhunched.png')).convert()
+    player_image_hunch.set_colorkey((0, 0, 0))
+
+    player_image_hunch_mirrored = pygame.image.load(
+        os.path.join('Assets', 'playermirrorhunched.png')).convert()
+    player_image_hunch_mirrored.set_colorkey((0, 0, 0))
+
+    super_bullet_image = pygame.image.load(
+        os.path.join('Assets', 'BULLETWORKPLEASE.png')).convert()
+    super_bullet_image.set_colorkey((0, 0, 0))
+
+    super_bullet_image_mirror = pygame.image.load(
+        os.path.join('Assets', 'BULLETWORKPLEASEmirror.png')).convert()
+    super_bullet_image_mirror.set_colorkey((0, 0, 0))
+
     player_rect = pygame.Rect(100, 100, 16, 32)
 
-    # spawn an enemy
-    enemy_image = pygame.image.load('enemy.png').convert()
-    enemy_image.set_colorkey((1, 0, 0))
+    enemy_image = pygame.image.load(
+        os.path.join('Assets', 'enemy.png')).convert()
+    enemy_image.set_colorkey((0, 0, 0))
     enemy_rect = pygame.Rect(267, 120, 16, 16)
-
-    enemy_image_2 = pygame.image.load('enemy.png').convert()
-    enemy_rect_2 = pygame.Rect(267, 120, 16, 16)
 
     background_objects = [[0.25, [120, 10, 70, 400]], [0.25, [280, 30, 40, 400]], [
         0.5, [30, 40, 40, 400]], [0.5, [130, 90, 100, 400]], [0.5, [300, 80, 120, 400]]]
@@ -183,20 +205,11 @@ def level_1_game_loop():
 
     true_scroll = [0, 0]
 
-    # you WILL have to do one in an opposite to get it real
-    super_bullet_image = pygame.image.load('BULLETWORKPLEASE.png').convert()
-    # THIS IS SHOOT LEFT
-    super_bullet_image_mirror = pygame.image.load(
-        'BULLETWORKPLEASEmirror.png').convert()
-
-    while True:  # game loop
-
+    while True:
         playerXcoordinate = player_rect.x
         playerYcoordinate = player_rect.y
 
-        # the dimensions of the rect (last 2 numbers) needs to be fine tuned
-
-        display.fill((146, 244, 255))  # clear screen by filling it with blue
+        display.fill((19, 88, 115))
 
         true_scroll[0] += (player_rect.x-true_scroll[0]-152)/20
         true_scroll[1] += (player_rect.y-true_scroll[1]-106)/20
@@ -204,14 +217,14 @@ def level_1_game_loop():
         scroll[0] = int(scroll[0])
         scroll[1] = int(scroll[1])
 
-        pygame.draw.rect(display, (7, 80, 75), pygame.Rect(0, 120, 300, 80))
+        pygame.draw.rect(display, (8, 37, 48), pygame.Rect(0, 120, 300, 80))
         for background_object in background_objects:
             obj_rect = pygame.Rect(background_object[1][0]-scroll[0]*background_object[0], background_object[1]
                                    [1]-scroll[1]*background_object[0], background_object[1][2], background_object[1][3])
             if background_object[0] == 0.5:
-                pygame.draw.rect(display, (14, 222, 150), obj_rect)
+                pygame.draw.rect(display, (167, 192, 203), obj_rect)
             else:
-                pygame.draw.rect(display, (9, 91, 85), obj_rect)
+                pygame.draw.rect(display, (8, 37, 48), obj_rect)
 
         tile_rects = []
         y = 0
@@ -219,20 +232,26 @@ def level_1_game_loop():
             x = 0
             for tile in layer:
                 if tile == '1':
-                    display.blit(dirt_img, (x*16-scroll[0], y*16-scroll[1]))
+                    display.blit(snowblock_image,
+                                 (x*16-scroll[0], y*16-scroll[1]))
                 if tile == '2':
-                    display.blit(grass_img, (x*16-scroll[0], y*16-scroll[1]))
+                    display.blit(
+                        ice_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '3':
                     display.blit(
-                        knd_image, (x * 16-scroll[0], y * 16-scroll[1]))
-                if tile == '4':
-                    display.blit(
                         flag_image, (x * 16-scroll[0], y * 16-scroll[1]))
-                # if tile == '5':
-                #    display.blit(whitebricks_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                if tile == '4':
+                    display.blit(whitebricks_image,
+                                 (x * 16-scroll[0], y * 16-scroll[1]))
+                if tile == '5':
+                    display.blit(snowblock_image,
+                                 (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile == '6':
+                    display.blit(snowrock_image,
+                                 (x * 16-scroll[0], y * 16-scroll[1]))
+                if tile == '7':
                     display.blit(
-                        red_image, (x * 16-scroll[0], y * 16-scroll[1]))
+                        tree4_image, (x * 16-scroll[0], y * 16-scroll[1]))
                 if tile != '0':
                     tile_rects.append(pygame.Rect(x*16, y*16, 16, 16))
                 x += 1
@@ -278,39 +297,33 @@ def level_1_game_loop():
                 if event.key == K_SPACE:
                     keys = pygame.key.get_pressed()
                     if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-                        print("Crouch cant shoot")
+                        pass
                     else:
                         if player_image == player_image_original:
-                            print("SHOOT RIGHT")
-                            # Spawns a rect and blits it(displays) it at the width and height coordinates of rect IDK how this worked but it does
                             super_bullet_rect = pygame.Rect(
                                 playerXcoordinate+20, playerYcoordinate, 50, 14)
                             display.blit(
                                 super_bullet_image, (player_rect.height+135, player_rect.width+100))
-                            bulletSound = mixer.Sound("sound/9mm.mp3")
-                            bulletSound.play()
 
                             if super_bullet_rect.colliderect(enemy_rect):
-                                #enemy_rect.x,enemy_rect.y = -1000,-1000
-                                print("111 enemy TWO death")
-
-                            if super_bullet_rect.colliderect(enemy_rect_2):
-                                #enemy_rect.x,enemy_rect.y = -1000,-1000
-                                print("111 enemy death")
+                                enemy_rect.x, enemy_rect.y = -1000, -1000
 
                         elif player_image == player_image_mirror:
-                            print("SHOOT LEFT")
                             super_bullet_mirror_rect = pygame.Rect(
                                 playerXcoordinate-30, playerYcoordinate, 50, 14)
-
                             display.blit(
                                 super_bullet_image_mirror, (player_rect.height+85, player_rect.width+100))
-                            #bulletSound = mixer.Sound("laser.wav")
-                            # bulletSound.play()
 
                             if super_bullet_mirror_rect.colliderect(enemy_rect):
-                                #enemy_rect.x,enemy_rect.y = -1000,-1000
-                                print("222 enemy death")
+                                enemy_rect.x, enemy_rect.y = -1000, -1000
+                        else:
+                            super_bullet_rect = pygame.Rect(
+                                playerXcoordinate+20, playerYcoordinate, 50, 14)
+                            display.blit(
+                                super_bullet_image, (player_rect.height+135, player_rect.width+100))
+
+                            if super_bullet_rect.colliderect(enemy_rect):
+                                enemy_rect.x, enemy_rect.y = -1000, -1000
 
                 if event.key == K_UP or event.key == K_w:
                     if air_timer < 6:
@@ -330,39 +343,25 @@ def level_1_game_loop():
                         playerXcoordinate, playerYcoordinate, 16, 32)
                     player_image = player_image_original
 
-        # kollar om karaktären ska dö
         if player_rect.y >= 300:
             player_death(player_rect)
 
-        # get x and y here
-        #print("X is")
-        # print(player_rect.x)
-
-        #print("Y is")
-        # print(player_rect.y)
-
-        # the enemy
         display.blit(enemy_image, (enemy_rect.x -
                      scroll[0], enemy_rect.y-scroll[1]))
 
-        display.blit(enemy_image_2, (enemy_rect_2.x -
-                     scroll[0], enemy_rect_2.y-scroll[1]))
-
         if enemy_rect.x == 32 or enemy_rect.x == 267:
             direction = enemy_movement_direction(enemy_rect)
-            # print(direction)
 
         enemy_movement(enemy_rect, direction)
-        # print(enemy_rect.x)
 
-        # new collision handler
+        # take away # if you want x and y coords
+        # player_coordinates_printer(playerXcoordinate,playerYcoordinate)
+
         if enemy_rect.colliderect(player_rect):
-            print("Collission 2")
             player_death(player_rect)
 
-        if player_rect.x >= 267:  # and player_rect.y == 19:
-            print("Win")
-            win_level()
+        if player_rect.x >= 1500 and player_rect.y == 16:
+            send_to_boss_fight_1()
 
         screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
         pygame.display.update()
