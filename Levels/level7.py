@@ -1,10 +1,12 @@
+from Levels.level8 import level_8_game_loop
 import pygame
 import sys
 import os
 import json
 from pygame.locals import *
+import pygame as pg
 
-from Levels.level8 import level_8_game_loop
+pg.init()
 
 
 def player_coordinates_printer(playerX, playerY):

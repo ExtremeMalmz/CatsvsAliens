@@ -1,11 +1,14 @@
 # VT2022-DA336A-TS195 - Cats vs Aliens - Anita Olsson, Eric Malmström, Ibrahim Kara Man, Sayed Hassan
+from Levels.level1 import level_1_game_loop
 import pygame
 import pygame
 import sys
 from pygame.locals import *
 import random
 
-from Levels.level1 import level_1_game_loop
+import pygame as pg
+
+pg.init()
 
 
 def loading_screen_main(levelNumber):

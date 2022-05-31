@@ -1,10 +1,12 @@
+from Levels.second_boss_fight import second_boss_fight_main
 import pygame
 import sys
 import os
 import json
 from pygame.locals import *
+import pygame as pg
 
-from Levels.second_boss_fight import second_boss_fight_main
+pg.init()
 
 
 def player_coordinates_printer(playerX, playerY):
